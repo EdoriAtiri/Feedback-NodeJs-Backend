@@ -60,9 +60,9 @@ app
 //   Requests Targeting a specific feedback
 app
   .route('/feedbacks/:feedbackID')
-
+  // Get one item by id
   .get((req, res) => {
-    Feedback.findOne({ id: req.params.feedbackID }, (err, foundFeedback) => {
+    Feedback.findById(req.params.feedbackID, (err, foundFeedback) => {
       if (err) {
         res.send('Feedback not found')
       } else {
@@ -71,11 +71,10 @@ app
     })
   })
 
+  //   Find one item by id and update
   .put((req, res) => {
-    Feedback.updateOne(
-      {
-        id: req.params.feedbackID,
-      },
+    Feedback.findByIdAndUpdate(
+      req.params.feedbackID,
       {
         rating: req.body.rating,
         text: req.body.text,
@@ -83,11 +82,25 @@ app
       (err) => {
         if (err) {
           res.send(err)
+          console.log(err)
         } else {
           res.send('Update successful')
         }
       }
     )
+  })
+
+  //   Find item by id and delete it
+  .delete((req, res) => {
+    Feedback.findByIdAndDelete(req.params.feedbackID, (err) => {
+      if (err) {
+        res.send(
+          `An error occured while deleting ${req.params.feedbackID}: ${err.message}`
+        )
+      } else {
+        res.send('successfully deleted item')
+      }
+    })
   })
 
 app.listen(3000, function () {
