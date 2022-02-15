@@ -34,24 +34,24 @@ app
       if (err) {
         console.log(err)
       } else {
-        console.log(foundFeedback)
         res.send(foundFeedback)
       }
     })
   })
 
   .post((req, res) => {
+    console.log(req.body)
     Feedback.create(
       {
         rating: req.body.rating,
         text: req.body.text,
       },
-      (err) => {
+      (err, result) => {
         if (err) {
           res.send(`error occured while trying to post new feedback - ${err}`)
         } else {
-          res.send('successfully posted new feedback')
-          console.log('works')
+          res.send(result)
+          //   console.log(result)
         }
       }
     )
@@ -73,24 +73,26 @@ app
 
   //   Find one item by id and update
   .put((req, res) => {
-    Feedback.findByIdAndUpdate(
-      req.params.feedbackID,
+    console.log(req.params.feedbackID)
+    Feedback.updateOne(
+      { _id: req.params.feedbackID },
       {
         rating: req.body.rating,
         text: req.body.text,
       },
-      (err) => {
+      (err, updatedFeedback) => {
         if (err) {
           res.send(err)
           console.log(err)
         } else {
-          res.send('Update successful')
+          res.send(updatedFeedback)
+          console.log(updatedFeedback)
         }
       }
     )
   })
 
-  //   Find item by id and delete it
+  //   Find item by id and delete
   .delete((req, res) => {
     Feedback.findByIdAndDelete(req.params.feedbackID, (err) => {
       if (err) {
@@ -103,6 +105,6 @@ app
     })
   })
 
-app.listen(3000, function () {
-  console.log('Server started on port 3000')
+app.listen(5000, function () {
+  console.log('Server started on port 5000')
 })
