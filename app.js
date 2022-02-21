@@ -14,9 +14,12 @@ app.use(
 main().catch((err) => console.log(err))
 
 async function main() {
-  await mongoose.connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-  })
+  await mongoose.connect(
+    'mongodb+srv://admin-edori:global1993@cluster0.avfes.mongodb.net/feedbackDB',
+    {
+      useNewUrlParser: true,
+    }
+  )
 }
 const db = mongoose.connection
 db.on('error', (err) => console.error(err))
